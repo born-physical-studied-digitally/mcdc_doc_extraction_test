@@ -4,11 +4,11 @@
 
 Docker-based platform to handle content relationships for an end-to-end archival artifacts pipeline. Intended to be used on standalone computing units to serve, access, and preserve documents, files, and their derivative artifacts. Tiramisu allows for distributed task management, frontend accessibility, metadata viewing, and graph-based database management. Most importantly, Tiramisu integrates a task manager with a graph database tailored for archival documents and processing using all open-source tools. We highly encourage you to adapt Tiramisu for your purposes; the as-is version is the barebones.
 
-Please email BPSD consortium for the next generation platform which builds on Tiramisu and improves usability and diversity of computational models.
+Please email BP/SD consortium for the next generation platform which builds on Tiramisu and improves usability and diversity of computational models.
 
 ## Get started
 
-You are most likely accessing this service in association to our manuscript **A digital archive reveals how a funding agency cooperated with academics to support a nascent field of science.** We encourage you to go through the `start_here.ipynb` associated with that manuscript repository which demonstrates all the key features of Tiramisu.
+We encourage you to go through the `start_here.ipynb` associated with that manuscript repository which demonstrates all the key features of Tiramisu.
 
 First, let Tiramisu know where the root location of your archive is by changing the field `TIRAMISU_ROOT` in `core/.env` file. Everything under this root directory will be tracked by Tiramisu (except for those under a blacklist and hidden files). This is where your documents are currently stored. The original documents will not be modified but their outputs will be tracked through Tiramisu. Then, set the field `NEO4J_PASSWORD` to be the password of your choice.
 
@@ -72,7 +72,7 @@ To shut down the service,
 If you wish to remove Tiramisu at any point, you can simply erase `.tiramisu` in the path you set in `core/.env`. `.tiramisu` is a privileged folder that is created once Tiramisu runs inside the specified root directory to avoid Tiramisu changing your original archival files.
 
 ## FAQs
-1. **My platform is not x86_64.**   
+1. **My platform is not x86_64 neither AArch64.**   
     The provided wheel file at `core/rust/target/wheels` will not work for your platform. You must create a wheel using the source code. To create a Python package using Rust code, you need to install Maturin to allow Rust binaries to be Python installable.
 
         pip install maturin
@@ -119,11 +119,9 @@ If you wish to remove Tiramisu at any point, you can simply erase `.tiramisu` in
     You can change `deploy: replicas: 1` in `core/docker-compose.yaml` for celery workers.
 5. **I get a "permissions" error in Docker.**
 
-    Most permissions error in Docker for Tiramisu will be due to the rootlessness of Tiramisu. This is intentional by design. You can either provide permissions separately by `chmod` or `chown` on the folders that are connected through Docker volume, or provide UID and GID directly to the containers in `core/docker-compose.yaml`.  
+    Most permissions error in Docker for Tiramisu will be due to the rootlessness of Tiramisu. This is intentional by design. You can temporarily solve the issue by using the `chmod` command on the folders that are connected through Docker volume.  
 
     You may also run this in default (rootful) docker, but we caution security risks associated with such action.
-    
-    If your LabelStudio is having this issue, you can create `.tiramisu/label-studio/media` and `.tiramisu/label-studio/export` folders and the re-run the Docker service. 
 
 6. **I want to submit a task that is not in the Tiramisu Actions front page.**  
     You can submit either tasks to be run concurrently at http://localhost:8080/api/action/concurrent or sequentially in chain at http://localhost:8080/api/action/chain. 
